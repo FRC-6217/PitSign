@@ -38,7 +38,7 @@ CRGB ledsO2[NUM_LEDS_O];
 CRGB ledsT[NUM_LEDS_T];
 CRGB ledsZ[NUM_LEDS_Z];
 
-int randNumber;
+int randNumber; 
 
 // addLeds multiple times, once for each strip
 void setup() {
