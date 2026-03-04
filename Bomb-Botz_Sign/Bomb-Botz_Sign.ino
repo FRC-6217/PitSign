@@ -11,14 +11,17 @@
 #define fadecount 2
 
 //set nubmer of LEDs per strip
-#define NUM_LEDS_B 23
-#define NUM_LEDS_O 20 
-#define NUM_LEDS_M 29
-#define NUM_LEDS_T 11
-#define NUM_LEDS_Z 14
+#define NUM_LEDS_BO 40
+#define NUM_LEDS_B 24
+#define NUM_LEDS_O 21 
+#define NUM_LEDS_M 30
+#define NUM_LEDS_T 13
+#define NUM_LEDS_Z 16
+#define NUM_LEDS_CF 30
 
 
 //set data pin for LED strip
+#define DATA_PIN_BO 2
 #define DATA_PIN_B1 3
 #define DATA_PIN_O1 4
 #define DATA_PIN_M 5
@@ -27,8 +30,10 @@
 #define DATA_PIN_O2 9
 #define DATA_PIN_T 10
 #define DATA_PIN_Z 11
+#define DATA_PIN_CF 12
 
 //create arrays of LED strip
+CRGB ledsBO[NUM_LEDS_BO];
 CRGB ledsB1[NUM_LEDS_B];
 CRGB ledsO1[NUM_LEDS_O];
 CRGB ledsM[NUM_LEDS_M];
@@ -37,6 +42,7 @@ CRGB ledsB3[NUM_LEDS_B];
 CRGB ledsO2[NUM_LEDS_O];
 CRGB ledsT[NUM_LEDS_T];
 CRGB ledsZ[NUM_LEDS_Z];
+CRGB ledsCF[NUM_LEDS_CF];
 
 int randNumber; 
 
@@ -59,6 +65,10 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN_T>(ledsT, NUM_LEDS_T);  
   // tell FastLED the NEOPIXEL leds on pin DATA_PIN_Z
   FastLED.addLeds<NEOPIXEL, DATA_PIN_Z>(ledsZ, NUM_LEDS_Z);
+  // tell FastLED the NEOPIXEL leds on pin DATA_PIN_CF
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_CF>(ledsCF, NUM_LEDS_CF);
+  // tell FastLED the NEOPIXEL leds on pin DATA_PIN_BO
+  FastLED.addLeds<NEOPIXEL, DATA_PIN_BO>(ledsBO, NUM_LEDS_BO);
 
   randomSeed(analogRead(0));
 }
@@ -95,6 +105,7 @@ void allFadeCount(int count,int red, int green, int blue) {
 }
 
 void allOn(const struct CRGB &color) {
+  fill_solid(ledsBO,NUM_LEDS_BO,color);
   fill_solid(ledsB1,NUM_LEDS_B,color);
   fill_solid(ledsO1,NUM_LEDS_O,color);
   fill_solid(ledsM,NUM_LEDS_M,color);
@@ -103,10 +114,14 @@ void allOn(const struct CRGB &color) {
   fill_solid(ledsO2,NUM_LEDS_O,color);
   fill_solid(ledsT,NUM_LEDS_T,color);
   fill_solid(ledsZ,NUM_LEDS_Z,color);
+  fill_solid(ledsCF,NUM_LEDS_CF,color);
 }
 
 
 void allOnDelay(const struct CRGB &color){
+  fill_solid(ledsBO,NUM_LEDS_BO,color);
+  FastLED.show();
+  delay(delayms);
   fill_solid(ledsB1,NUM_LEDS_B,color);
   FastLED.show();
   delay(delayms);
@@ -129,6 +144,9 @@ void allOnDelay(const struct CRGB &color){
   FastLED.show();
   delay(delayms);
   fill_solid(ledsZ,NUM_LEDS_Z,color);
+  FastLED.show();
+  delay(delayms);
+  fill_solid(ledsCF,NUM_LEDS_CF,color);
   FastLED.show();
   delay(delayms);
 }
@@ -172,7 +190,7 @@ void gearCylon() {
 }*/
 
 void loop() {
-  //b1Black();
+
   randNumber = random(1,5);
   switch(randNumber) {
     case 1:
@@ -184,13 +202,16 @@ void loop() {
       FastLED.delay(delayms);
     break;
     case 2:
-      allFadeCount(1,124,252,0);  //lawn green
+      allFadeCount(1,0,0,255);  //blue
       FastLED.show();
       FastLED.delay(delayms);
     break;
     case 3:
-      allFadeCount(1,255,255,0);   //yellow
-      FastLED.show(); 
+       allOnDelay(CRGB::Blue);
+      FastLED.show();;
+      FastLED.delay(delayms);
+      allOn(CRGB::Black);
+      FastLED.show();;
       FastLED.delay(delayms);
     break;
     case 4:
